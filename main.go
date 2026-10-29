@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -150,7 +149,8 @@ func FindFirstFailure(requestEntries []LogEntry) (LogEntry, bool) {
 }
 
 func SortTimelineByTimestamp(entries []LogEntry) []LogEntry {
-	cloned := slices.Clone(entries)
+	cloned := make([]LogEntry, len(entries))
+	copy(cloned, entries)
 	sort.Slice(cloned, func(i, j int) bool {
 		return cloned[i].Timestamp.Before(cloned[j].Timestamp)
 	})
