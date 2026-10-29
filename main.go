@@ -12,7 +12,7 @@ var requestRe = regexp.MustCompile(`request_id=([a-zA-Z0-9_]+)`)
 var userRe = regexp.MustCompile(`user_id=([a-zA-Z0-9_]+)`)
 
 type LogEntry struct {
-	TimeStamp time.Time
+	Timestamp time.Time
 	Level     string
 	Service   string
 	Message   string
