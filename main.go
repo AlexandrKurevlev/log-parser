@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 )
@@ -120,5 +121,38 @@ func CorrelateRequests(entries []LogEntry) map[string][]LogEntry {
 	return res
 }
 
+func DetectFailedRequests(correlatedRequests map[string][]LogEntry) []string {
+	res := make([]string, 0)
+	for reqId, entries := range correlatedRequests {
+		for _, entry := range entries {
+			if entry.Level == "WARN" || entry.Level == "ERROR" {
+				res = append(res, reqId)
+				break
+			}
+		}
+	}
+	return res
+}
+
+func FindFirstFailure(requestEntries []LogEntry) (LogEntry, bool) {
+	sort.Slice(requestEntries, func(i, j int) bool {
+		return requestEntries[i].Timestamp.Before(requestEntries[j].Timestamp)
+	})
+
+	for _, entry := range requestEntries {
+		if entry.Level == "WARN" || entry.Level == "ERROR" {
+			return entry, true
+		}
+	}
+
+	return LogEntry{}, false
+}
+
 func main() {
+	files, _ := ScanLogDirectory("logs")
+	entries, _ := ProcessMultipleFiles(files)
+	correlatedRequests := CorrelateRequests(entries)
+	for _, reqId := range DetectFailedRequests(correlatedRequests) {
+		fmt.Println(FindFirstFailure(correlatedRequests[reqId]))
+	}
 }
