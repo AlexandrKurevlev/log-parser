@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"errors"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
@@ -182,11 +183,24 @@ func WriteJSONReport(result AnalysisResult, filename string) error {
 	return nil
 }
 
-func main() {
-	files, _ := ScanLogDirectory("logs")
-	entries, _ := ProcessMultipleFiles(files)
-	correlatedRequests := CorrelateRequests(entries)
-	for _, reqId := range DetectFailedRequests(correlatedRequests) {
-		fmt.Println(FindFirstFailure(correlatedRequests[reqId]))
+type Config struct {
+	InputDir   string
+	OutputFile string
+}
+
+func ParseCommandLineArgs() (Config, error) {
+	inputDir := flag.String("input-dir", ".", "Directory containing .log files")
+	outputFile := flag.String("output-file", "results.json", "JSON output file path")
+	flag.Parse()
+
+	_, err := os.Stat(*inputDir)
+	if err != nil {
+		return Config{}, err
 	}
+
+	return Config{*inputDir, *outputFile}, nil
+}
+
+func main() {
+	ParseCommandLineArgs()
 }
