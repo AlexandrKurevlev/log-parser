@@ -174,7 +174,7 @@ type FailedRequestReport struct {
 
 func WriteJSONReport(result AnalysisResult, filename string) error {
 	data, _ := json.MarshalIndent(result, "", "  ")
-	err := os.WriteFile("report.json", data, 0644)
+	err := os.WriteFile(filename, data, 0644)
 	if err != nil {
 		return err
 	}
