@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"errors"
+	"fmt"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -44,6 +47,32 @@ func ParseLogLine(line string) (LogEntry, error) {
 	}
 
 	return LogEntry{t, matches[2], matches[3], message, reqMatches[1], userId}, nil
+}
+
+func ReadLogFile(filepath string) ([]LogEntry, error) {
+	file, err := os.Open(filepath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	resLogEntries := make([]LogEntry, 0)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		lp, err := ParseLogLine(line)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			resLogEntries = append(resLogEntries, lp)
+		}
+	}
+
+	if scanner.Err() != nil {
+		return nil, scanner.Err()
+	}
+
+	return resLogEntries, nil
 }
 
 func main() {
