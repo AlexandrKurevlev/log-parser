@@ -111,7 +111,11 @@ func ProcessMultipleFiles(filePaths []string) ([]LogEntry, error) {
 func CorrelateRequests(entries []LogEntry) map[string][]LogEntry {
 	res := make(map[string][]LogEntry)
 	for _, le := range entries {
-		res[le.RequestID] = append(res[le.RequestID], le)
+		if le.RequestID == "" {
+			res[""] = append(res[""], le)
+		} else {
+			res[le.RequestID] = append(res[le.RequestID], le)
+		}
 	}
 	return res
 }
