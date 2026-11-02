@@ -1,0 +1,5 @@
+2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc1, user_id=12345
+2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc2, user_id=12345
+2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc3, user_id=12345
+2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc4, user_id=12345
+2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc5, user_id=12345

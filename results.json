@@ -1,0 +1,27 @@
+{
+  "total_entries_processed": 14,
+  "failed_requests_found": 2,
+  "processing_time_seconds": 1.0015762,
+  "failed_requests": [
+    {
+      "request_id": "req_abc1",
+      "failing_service": "user-service",
+      "error_message": "User authenticated, request_id=req_abc1, user_id=12345",
+      "timeline": [
+        "2023-12-25T14:30:15.123Z [WARN] user-service: User authenticated, request_id=req_abc1, user_id=12345",
+        "2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc1, user_id=12345",
+        "2023-12-25T14:30:15.123Z [INFO] payment-service: User authenticated, request_id=req_abc1"
+      ]
+    },
+    {
+      "request_id": "req_abc3",
+      "failing_service": "user-service",
+      "error_message": "User authenticated, request_id=req_abc3, user_id=12345",
+      "timeline": [
+        "2023-12-25T14:30:15.123Z [ERROR] user-service: User authenticated, request_id=req_abc3, user_id=12345",
+        "2023-12-25T14:30:15.123Z [INFO] order-servcie: User authenticated, request_id=req_abc3, user_id=12345",
+        "2023-12-25T14:30:15.123Z [INFO] payment-service: User authenticated, request_id=req_abc3, user_id=12345"
+      ]
+    }
+  ]
+}
