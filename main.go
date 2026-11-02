@@ -109,12 +109,17 @@ func ProcessFilesConcurrently(filePaths []string, numWorkers int) ([]parser.LogE
 }
 
 func fileWorker(ctx context.Context, jobs <-chan string, results chan<- []parser.LogEntry) {
-	select {
-	case <-ctx.Done():
-		return
-	case path := <-jobs:
-		time.Sleep(1 * time.Second)
-		entries, _ := processor.ReadLogFile(path)
-		results <- entries
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case path, ok := <-jobs:
+			if !ok {
+				return
+			}
+			time.Sleep(1 * time.Second)
+			entries, _ := processor.ReadLogFile(path)
+			results <- entries
+		}
 	}
 }
