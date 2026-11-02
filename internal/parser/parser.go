@@ -12,12 +12,13 @@ var requestRe = regexp.MustCompile(`request_id=([a-zA-Z0-9_]+)`)
 var userRe = regexp.MustCompile(`user_id=([a-zA-Z0-9_]+)`)
 
 type LogEntry struct {
-	Timestamp time.Time
-	Level     string
-	Service   string
-	Message   string
-	RequestID string
-	UserID    string
+	Timestamp   time.Time
+	Level       string
+	Service     string
+	Message     string
+	RequestID   string
+	UserID      string
+	OriginalLog string
 }
 
 func ParseLogLine(line string) (LogEntry, error) {
@@ -43,5 +44,5 @@ func ParseLogLine(line string) (LogEntry, error) {
 		userId = userMatches[1]
 	}
 
-	return LogEntry{Timestamp: t, Level: matches[2], Service: matches[3], Message: message, RequestID: reqMatches[1], UserID: userId}, nil
+	return LogEntry{Timestamp: t, Level: matches[2], Service: matches[3], Message: message, RequestID: reqMatches[1], UserID: userId, OriginalLog: line}, nil
 }
